@@ -18,8 +18,9 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        // Style when disabled is handled automatically by Flutter, 
-        // but we can also specify disabledBackgroundColor if we want.
+        // 👇 ADD THIS LINE: double.infinity makes it full width
+        minimumSize: const Size(double.infinity, 56),
+
         backgroundColor: isSecondary ? Colors.grey[200] : AppColors.primaryBlue,
         foregroundColor: isSecondary ? AppColors.textBlack : Colors.white,
         elevation: isSecondary ? 0 : 2,
