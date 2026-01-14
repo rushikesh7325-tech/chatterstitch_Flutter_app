@@ -108,24 +108,35 @@ class _ProficiencyLevelScreenState extends State<ProficiencyLevelScreen> {
       onTap: () => setState(() => selectedIndex = index),
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        width: double.infinity, // 👈 ADD THIS: Forces tile to match button width
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20), // Increased padding for better feel
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFB2EBF2).withOpacity(0.5) : Colors.white,
-          borderRadius: BorderRadius.circular(15),
+          color: isSelected ? AppColors.selectionCyan : Colors.white, // Use your global Cyan color
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSelected ? AppColors.primaryBlue : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
+            width: 2, // Consistent border thickness
           ),
-          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            )
+          ],
         ),
         child: Row(
           children: [
             _buildBarIcon(barCount, isSelected),
-            const SizedBox(width: 16),
+            const SizedBox(width: 20),
             Expanded(
               child: Text(
                 text,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  fontSize: 16, 
+                  fontWeight: FontWeight.bold, // Bold makes it look more professional
+                  color: Colors.black87,
+                ),
               ),
             ),
           ],
