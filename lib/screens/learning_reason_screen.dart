@@ -53,10 +53,15 @@ class _LearningReasonScreenState extends State<LearningReasonScreen> {
                   const SizedBox(height: 20),
                   Row(
                     children: [
-                      Image.asset('assets/images/stitch_reading.png', width: 60),
+                      Image.asset(
+                        'assets/images/stitch_reading.png',
+                        width: 60,
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: _buildSpeechBubble("Why are you learning ${widget.selectedLanguage}?"),
+                        child: _buildSpeechBubble(
+                          "Why are you learning ${widget.selectedLanguage}?",
+                        ),
                       ),
                     ],
                   ),
@@ -77,8 +82,12 @@ class _LearningReasonScreenState extends State<LearningReasonScreen> {
             child: CustomButton(
               text: 'Continue',
               onPressed: selectedIndices.isEmpty ? null : () {
-                // Navigate to the next question screen
-              },
+  Navigator.pushNamed(
+    context, 
+    '/routine_intro', 
+    arguments: widget.selectedLanguage,
+  );
+},
             ),
           ),
           const SizedBox(height: 20),
@@ -96,58 +105,93 @@ class _LearningReasonScreenState extends State<LearningReasonScreen> {
         border: Border.all(color: Colors.grey.shade300),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4)],
       ),
-      child: Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      ),
     );
   }
 
+  // Inside _LearningReasonScreenState...
+
   Widget _buildReasonTile(int index, String text, String iconPath) {
+    // Check if this specific index is inside our Set
     bool isSelected = selectedIndices.contains(index);
 
     return GestureDetector(
       onTap: () {
         setState(() {
           if (isSelected) {
-            selectedIndices.remove(index);
+            selectedIndices.remove(index); // Deselect
           } else {
-            selectedIndices.add(index);
+            selectedIndices.add(index); // Select
           }
         });
       },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          // Match Frame 10 background colors
+          color: isSelected ? const Color(0xFF64E9FF) : Colors.white,
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
             color: isSelected ? AppColors.primaryBlue : Colors.grey.shade300,
             width: isSelected ? 2 : 1,
           ),
-          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Row(
           children: [
-            Image.asset(iconPath, width: 30, height: 30, 
-              errorBuilder: (context, error, stackTrace) => const Icon(Icons.star, color: Colors.orange)),
+            // Icon
+            Image.asset(
+              iconPath,
+              width: 32,
+              height: 32,
+              errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.star, color: Colors.orange),
+            ),
             const SizedBox(width: 16),
+
+            // Text
             Expanded(
               child: Text(
                 text,
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: isSelected ? Colors.black : Colors.black87,
+                ),
               ),
             ),
-            // Checkbox
+
+            // Custom Checkbox (Matches Frame 10)
             Container(
-              width: 24,
-              height: 24,
+              width: 28,
+              height: 28,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade400, width: 2),
-                borderRadius: BorderRadius.circular(4),
-                color: isSelected ? AppColors.primaryBlue : Colors.transparent,
+                border: Border.all(
+                  color: isSelected ? Colors.black : Colors.grey.shade400,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(6),
+                color: Colors.transparent,
               ),
-              child: isSelected 
-                ? const Icon(Icons.check, size: 18, color: Colors.white) 
-                : null,
+              child: isSelected
+                  ? const Icon(
+                      Icons.check,
+                      size: 22,
+                      color: Colors.black,
+                      weight: 900,
+                    )
+                  : null,
             ),
           ],
         ),
